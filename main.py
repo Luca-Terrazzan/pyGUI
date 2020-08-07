@@ -1,18 +1,13 @@
+import sys, os
 import PySimpleGUI as sg
 
-sg.theme('DarkAmber')   # Add a touch of color
-# All the stuff inside your window.
-layout = [ [sg.Text('Some text on Row 1')],
-           [sg.Text('Enter something on Row 2'), sg.InputText()],
-           [sg.Button('Ok'), sg.Button('Cancel')] ]
+if len(sys.argv) == 1:
+    folder = sg.popup_get_folder('Select a folder')
+else:
+    folder = sys.argv[1]
 
-# Create the Window
-window = sg.Window('Window Title', layout)
-# Event Loop to process "events" and get the "values" of the inputs
-while True:
-    event, values = window.read()
-    if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
-        break
-    print('You entered ', values[0])
-
-window.close()
+if not folder or not os.path.exists(folder):
+    sg.popup("Invalid or non existing folder!")
+    raise SystemExit("Cancelling: no filename supplied")
+else:
+    sg.popup('The filename you chose was', folder)
